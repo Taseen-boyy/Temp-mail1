@@ -1,29 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Master Hub | TrashMail</title>
+    <meta charset="UTF-8"><title>Master Hub | TrashMail</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>body { background: #020617; color: white; } .box { background: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 20px; }</style>
+    <style>
+        body { background: #020617; color: white; }
+        .box { background: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 20px; }
+        input, textarea, select { background: #1e293b; border: 1px solid #334155; padding: 12px; border-radius: 10px; width: 100%; color: white; margin-top: 5px; outline: none; }
+        input:focus { border-color: #10b981; }
+        label { font-size: 11px; color: #64748b; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
 </head>
-<body class="p-6">
+<body class="p-6 pb-20">
     <div id="login" class="max-w-md mx-auto mt-20 box text-center">
-        <h1 class="text-2xl font-bold mb-4 text-emerald-500">Admin Login</h1>
-        <input type="password" id="pass" placeholder="Password" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl mb-4 text-center text-white">
-        <button onclick="login()" class="w-full bg-emerald-500 text-black font-bold py-3 rounded-xl">UNLOCK DASHBOARD</button>
+        <h1 class="text-2xl font-bold mb-4 text-emerald-500 uppercase tracking-tighter">Admin Access</h1>
+        <input type="password" id="pass" placeholder="Password" class="mb-4 text-center">
+        <button onclick="login()" class="w-full bg-emerald-500 text-black font-bold py-4 rounded-xl">UNLOCK HUB</button>
     </div>
 
-    <div id="dash" class="hidden max-w-4xl mx-auto space-y-6">
-        <div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Admin <span class="text-emerald-500">Master Hub</span></h1><button onclick="save()" class="bg-emerald-500 text-black px-10 py-3 rounded-xl font-bold">SAVE ALL</button></div>
+    <div id="dash" class="hidden max-w-5xl mx-auto space-y-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold uppercase tracking-tighter">System <span class="text-emerald-500">Hub</span></h1>
+            <button onclick="save()" class="bg-emerald-500 text-black px-12 py-4 rounded-xl font-bold shadow-lg shadow-emerald-500/20">SAVE ALL CHANGES</button>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="box space-y-4">
-                <label class="text-xs text-gray-500">SITE NAME</label><input type="text" id="siteName" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white">
-                <label class="text-xs text-gray-500">MAINTENANCE</label><select id="main" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"><option value="false">OFF</option><option value="true">ON</option></select>
+            <div class="box space-y-4 border-t-4 border-emerald-500">
+                <h3 class="font-bold text-emerald-500 uppercase text-xs mb-4">Website Identity</h3>
+                <div><label>Site Name</label><input type="text" id="siteName"></div>
+                <div><label>Site Description</label><input type="text" id="desc"></div>
+                <div><label>Logo Image URL</label><input type="text" id="logo"></div>
+                <div><label>Footer Copyright Text</label><input type="text" id="footer"></div>
             </div>
-            <div class="box space-y-4"><label class="text-xs text-gray-500">API KEYS (One Per Line)</label><textarea id="keys" rows="5" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"></textarea></div>
-            <div class="box md:col-span-2 space-y-4">
-                <label class="text-xs text-gray-500">TOP AD HTML</label><textarea id="adT" rows="4" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"></textarea>
-                <label class="text-xs text-gray-500">BOTTOM AD HTML</label><textarea id="adB" rows="4" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"></textarea>
+
+            <div class="box space-y-4 border-t-4 border-blue-500">
+                <h3 class="font-bold text-blue-500 uppercase text-xs mb-4">Backend & Safety</h3>
+                <div><label>CyberTemp API Keys (One per line)</label><textarea id="keys" rows="4"></textarea></div>
+                <div class="flex gap-4">
+                    <div class="flex-1"><label>Maintenance Mode</label>
+                        <select id="maint"><option value="false">OFF (Live)</option><option value="true">ON (System Lock)</option></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box md:col-span-2 space-y-4 border-t-4 border-purple-500">
+                <h3 class="font-bold text-purple-500 uppercase text-xs mb-4">Announcement & Marketing</h3>
+                <div><label>Global Announcement Message</label><input type="text" id="ann"></div>
+                <div><label>Show Announcement</label>
+                    <select id="sAnn"><option value="false">Hidden</option><option value="true">Show to Everyone</option></select>
+                </div>
+            </div>
+
+            <div class="box md:col-span-2 space-y-4 border-t-4 border-orange-500">
+                <h3 class="font-bold text-orange-500 uppercase text-xs mb-4">Advertising Space (HTML)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label>Top Banner HTML</label><textarea id="adT" rows="4"></textarea></div>
+                    <div><label>Bottom Banner HTML</label><textarea id="adB" rows="4"></textarea></div>
+                </div>
             </div>
         </div>
     </div>
@@ -37,17 +70,34 @@
                 const data = await res.json();
                 document.getElementById('login').classList.add('hidden');
                 document.getElementById('dash').classList.remove('hidden');
-                document.getElementById('siteName').value = data.siteName;
-                document.getElementById('keys').value = data.apiKeys.join('\n');
-                document.getElementById('adT').value = data.adTop;
-                document.getElementById('adB').value = data.adBottom;
-                document.getElementById('main').value = data.maintenance.toString();
+                document.getElementById('siteName').value = data.siteName || "";
+                document.getElementById('desc').value = data.description || "";
+                document.getElementById('logo').value = data.logoUrl || "";
+                document.getElementById('footer').value = data.footerText || "";
+                document.getElementById('keys').value = (data.apiKeys || []).join('\n');
+                document.getElementById('ann').value = data.announcement || "";
+                document.getElementById('sAnn').value = data.showAnnouncement.toString();
+                document.getElementById('maint').value = data.maintenance.toString();
+                document.getElementById('adT').value = data.adTop || "";
+                document.getElementById('adB').value = data.adBottom || "";
             } else { alert("Wrong Password!"); }
         }
+
         async function save() {
-            const data = { siteName: document.getElementById('siteName').value, apiKeys: document.getElementById('keys').value.split('\n').filter(k => k.trim()), adTop: document.getElementById('adT').value, adBottom: document.getElementById('adB').value, maintenance: document.getElementById('main').value === "true" };
+            const data = {
+                siteName: document.getElementById('siteName').value,
+                description: document.getElementById('desc').value,
+                logoUrl: document.getElementById('logo').value,
+                footerText: document.getElementById('footer').value,
+                apiKeys: document.getElementById('keys').value.split('\n').filter(k => k.trim()),
+                announcement: document.getElementById('ann').value,
+                showAnnouncement: document.getElementById('sAnn').value === "true",
+                maintenance: document.getElementById('maint').value === "true",
+                adTop: document.getElementById('adT').value,
+                adBottom: document.getElementById('adB').value
+            };
             const res = await fetch('/api/admin/config', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ password: p, action: 'update', data }) });
-            if(res.ok) alert("Config Saved to MongoDB!");
+            if(res.ok) alert("Everything Synchronized Successfully!");
         }
     </script>
 </body>
