@@ -8,11 +8,14 @@ export default async function handler(req, res) {
     if (password !== "1234ayon") return res.status(401).json({ error: "Unauthorized" });
 
     if (action === 'get') {
-        const config = await Config.findOne() || await Config.create({});
+        let config = await Config.findOne();
+        if (!config) config = await Config.create({});
         return res.status(200).json(config);
     }
+
     if (action === 'update') {
-        await Config.findOneAndUpdate({}, data, { upsert: true });
+        // এই লাইনটি ডাটাবেসে সব ডাটা আপডেট নিশ্চিত করবে
+        await Config.findOneAndUpdate({}, data, { upsert: true, new: true });
         return res.status(200).json({ success: true });
     }
 }
