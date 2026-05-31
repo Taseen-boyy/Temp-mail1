@@ -6,54 +6,43 @@ export default async function handler(req, res) {
         await dbConnect();
         let config = await Config.findOne();
         
-        // ১. ডিফল্ট সেটিংস যদি ডাটাবেস কানেক্ট না হয়
         const siteName = config?.siteName || "10-MIN TRASHMAIL";
+        // ডাটাবেসে না থাকলে এই নতুন ৩টি কি ব্যবহার করবে
         const keys = (config?.apiKeys && config.apiKeys.length > 0) 
                      ? config.apiKeys 
-                     : ["tk_ad30d1e1d46266c3bbb45b067c08e99ebe5392af8e8355591d7682feefcfaa77"];
+                     : [
+                        "tk_184f7389c354566088aab768da2e663f7ddd0bc853fea78143e33ab623e45406",
+                        "tk_960ab5108eca73e6140ffb8ce3b624d493479de16249e5794ffb757486f93324",
+                        "tk_bc1a66a599e5af21c8b79cebf0dfa4434e2d7f99f5201962449126c5b997d17a"
+                       ];
 
         const activeKey = keys[Math.floor(Math.random() * keys.length)];
 
-        // ২. CyberTemp API থেকে ডোমেইন আনা
         const response = await fetch('https://api.cybertemp.xyz/api/domains', {
-            headers: { 'Authorization': `Bearer ${activeKey}` },
-            method: 'GET'
+            headers: { 'Authorization': `Bearer ${activeKey}` }
         });
 
-        let domain = "cybertemp.xyz"; // Default domain
-
+        let domain = "cybertemp.xyz";
         if (response.ok) {
             const data = await response.json();
-            // ডাটা ফরম্যাট চেক করা (Array না কি Object)
             const domainList = Array.isArray(data) ? data : (data.domains || []);
-            if (domainList.length > 0) {
-                domain = domainList[0];
-            }
+            if (domainList.length > 0) domain = domainList[0];
         }
 
         const username = Math.random().toString(36).substring(2, 10);
-        const email = `${username}@${domain}`;
-
         return res.status(200).json({
-            email: email,
+            email: `${username}@${domain}`,
             siteName: siteName,
-            description: config?.description || "Premium Disposable Email Service",
+            description: config?.description || "",
             logoUrl: config?.logoUrl || "",
             adTop: config?.adTop || "",
             adBottom: config?.adBottom || "",
-            footerText: config?.footerText || "© 2024 Premium TrashMail",
+            footerText: config?.footerText || "",
             announcement: config?.announcement || "",
             showAnnouncement: config?.showAnnouncement || false
         });
-
     } catch (e) {
-        console.error("Generate Error:", e);
-        // যদি সব ফেইল করে তবুও কাজ করবে এই নিচের কোডটি
-        const fallbackUser = Math.random().toString(36).substring(2, 10);
-        return res.status(200).json({ 
-            email: `${fallbackUser}@cybertemp.xyz`, 
-            siteName: "TRASHMAIL",
-            description: "Temporary Email Service"
-        });
+        const u = Math.random().toString(36).substring(2, 10);
+        return res.status(200).json({ email: `${u}@cybertemp.xyz`, siteName: "TRASHMAIL" });
     }
 }
