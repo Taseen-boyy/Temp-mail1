@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Master Hub | TrashMail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>body { background: #020617; color: white; } .box { background: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 20px; }</style>
+</head>
+<body class="p-6">
+    <div id="login" class="max-w-md mx-auto mt-20 box text-center">
+        <h1 class="text-2xl font-bold mb-4 text-emerald-500">Admin Login</h1>
+        <input type="password" id="pass" placeholder="Password" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl mb-4 text-center text-white">
+        <button onclick="login()" class="w-full bg-emerald-500 text-black font-bold py-3 rounded-xl">UNLOCK DASHBOARD</button>
+    </div>
+
+    <div id="dash" class="hidden max-w-4xl mx-auto space-y-6">
+        <div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Admin <span class="text-emerald-500">Master Hub</span></h1><button onclick="save()" class="bg-emerald-500 text-black px-10 py-3 rounded-xl font-bold">SAVE ALL</button></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="box space-y-4">
+                <label class="text-xs text-gray-500">SITE NAME</label><input type="text" id="siteName" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white">
+                <label class="text-xs text-gray-500">MAINTENANCE</label><select id="main" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"><option value="false">OFF</option><option value="true">ON</option></select>
+            </div>
+            <div class="box space-y-4"><label class="text-xs text-gray-500">API KEYS (One Per Line)</label><textarea id="keys" rows="5" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"></textarea></div>
+            <div class="box md:col-span-2 space-y-4">
+                <label class="text-xs text-gray-500">TOP AD HTML</label><textarea id="adT" rows="4" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"></textarea>
+                <label class="text-xs text-gray-500">BOTTOM AD HTML</label><textarea id="adB" rows="4" class="w-full bg-black/40 p-3 rounded-lg border border-white/10 text-white"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let p = "";
+        async function login() {
+            p = document.getElementById('pass').value;
+            const res = await fetch('/api/admin/config', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ password: p, action: 'get' }) });
+            if(res.ok) {
+                const data = await res.json();
+                document.getElementById('login').classList.add('hidden');
+                document.getElementById('dash').classList.remove('hidden');
+                document.getElementById('siteName').value = data.siteName;
+                document.getElementById('keys').value = data.apiKeys.join('\n');
+                document.getElementById('adT').value = data.adTop;
+                document.getElementById('adB').value = data.adBottom;
+                document.getElementById('main').value = data.maintenance.toString();
+            } else { alert("Wrong Password!"); }
+        }
+        async function save() {
+            const data = { siteName: document.getElementById('siteName').value, apiKeys: document.getElementById('keys').value.split('\n').filter(k => k.trim()), adTop: document.getElementById('adT').value, adBottom: document.getElementById('adB').value, maintenance: document.getElementById('main').value === "true" };
+            const res = await fetch('/api/admin/config', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ password: p, action: 'update', data }) });
+            if(res.ok) alert("Config Saved to MongoDB!");
+        }
+    </script>
+</body>
+</html>
