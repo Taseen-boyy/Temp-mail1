@@ -1,8 +1,7 @@
-const fetch = require('node-fetch');
-
 export default async function handler(req, res) {
     const { email } = req.query;
-    
+    if (!email) return res.status(200).json([]);
+
     const keys = [
         "tk_ad30d1e1d46266c3bbb45b067c08e99ebe5392af8e8355591d7682feefcfaa77",
         "tk_1bdd15ac81eff1414dcea0ebc128e0edc3a614af49e34b3a8957a12ac97ae91a",
@@ -17,9 +16,12 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        // মেসেজ থাকলে লিস্ট পাঠাবে, না থাকলে খালি এরে []
-        return res.status(200).json(data.emails || data);
+        
+        // CyberTemp API অনেক সময় সরাসরি এরে দেয় অথবা অবজেক্টের ভেতরে 'emails' দেয়
+        const messages = Array.isArray(data) ? data : (data.emails || []);
+        
+        return res.status(200).json(messages);
     } catch (e) {
-        return res.status(500).json({ error: "Inbox fetch failed" });
+        return res.status(200).json([]);
     }
 }
