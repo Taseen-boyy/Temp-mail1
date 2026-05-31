@@ -18,5 +18,5 @@ export default async function handler(req, res) {
             }
         } catch (e) { continue; }
     }
-    return res.status(200).json([]);
+    res.status(200).json([]);
 }
