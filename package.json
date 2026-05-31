@@ -1,7 +1,6 @@
 {
   "name": "10min-trashmail",
   "version": "1.0.0",
-  "dependencies": {
-    "node-fetch": "^2.6.7"
-  }
+  "main": "index.js",
+  "dependencies": {}
 }
