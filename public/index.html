@@ -3,141 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10-Min TrashMail | Stealth Inbox</title>
+    <title>10-Min TrashMail | Fast & Secure</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background-color: #05070a; 
-            color: #f8fafc; 
-            font-family: 'Space Grotesk', sans-serif;
-            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #05070a 100%);
-        }
-        .glow-card { 
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .emerald-glow {
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-primary:hover {
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
-            transform: translateY(-2px);
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        body { background: #05070a; color: #f8fafc; font-family: 'Space Grotesk', sans-serif; background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #05070a 100%); }
+        .glow-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); transition: all 0.2s ease; }
+        .btn-green:active { transform: scale(0.95); }
+        .refresh-spin { animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen pb-10">
+<body class="min-h-screen">
 
-    <!-- Header -->
     <header class="p-6 flex justify-between items-center max-w-4xl mx-auto">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-emerald-500 rounded-lg rotate-12 flex items-center justify-center font-bold text-black italic">T</div>
-            <h1 class="text-xl font-bold tracking-tighter">TRASH<span class="text-emerald-500">MAIL</span></h1>
-        </div>
-        <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-            <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            System Live
+        <h1 class="text-xl font-bold tracking-tighter">TRASH<span class="text-emerald-500">MAIL</span></h1>
+        <div class="flex items-center gap-2 text-[10px] text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span> SYSTEM ACTIVE
         </div>
     </header>
 
     <main class="max-w-xl mx-auto px-4 mt-4 space-y-6">
         
-        <!-- Main Card -->
-        <div class="glow-card rounded-3xl p-8 text-center border-t border-white/10">
-            <div id="countdown" class="text-6xl font-bold emerald-glow mb-6 tracking-tighter transition-all">10:00</div>
-            
+        <!-- Timer & Email -->
+        <div class="glow-card rounded-3xl p-8 text-center">
+            <div id="countdown" class="text-6xl font-bold text-emerald-500 mb-6 tracking-tighter">10:00</div>
             <div class="space-y-4">
-                <div class="relative group">
-                    <input type="text" id="emailBox" readonly value="Generating..." 
-                        class="w-full bg-black/40 border border-white/5 p-5 rounded-2xl text-center text-lg font-medium text-emerald-100 placeholder-gray-600 focus:outline-none focus:border-emerald-500/50 transition-all">
-                </div>
-
+                <input type="text" id="emailBox" readonly value="Syncing API..." 
+                    class="w-full bg-black/40 border border-white/5 p-5 rounded-2xl text-center text-lg text-emerald-100 focus:outline-none transition-all">
+                
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="copyEmail()" class="btn-primary col-span-2 text-black font-bold py-4 rounded-2xl flex items-center justify-center gap-2">
-                        COPY ADDRESS
-                    </button>
-                    <button onclick="extendTime()" class="bg-white/5 hover:bg-white/10 py-4 rounded-2xl text-sm font-semibold transition-all border border-white/5">+10 Min</button>
-                    <button onclick="initEmail()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 py-4 rounded-2xl text-sm font-semibold transition-all border border-red-500/20">New Address</button>
+                    <button onclick="copyEmail()" class="btn-green col-span-2 text-black font-bold py-4 rounded-2xl">COPY ADDRESS</button>
+                    <button onclick="extendTime()" class="bg-white/5 py-4 rounded-2xl text-sm">+10 Min</button>
+                    <button onclick="initEmail()" class="bg-red-500/10 text-red-400 py-4 rounded-2xl text-sm">New Address</button>
                 </div>
             </div>
         </div>
 
-        <!-- Ads Space -->
-        <div class="h-24 w-full bg-white/5 rounded-2xl border border-white/5 flex items-center justify-center text-[10px] text-gray-600 tracking-widest uppercase">
-            Advertisement Space
-        </div>
-
-        <!-- Inbox -->
+        <!-- Inbox Section -->
         <section class="space-y-4">
-            <div class="flex justify-between items-end px-2">
-                <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Inbox Activity</h2>
-                <span id="loader" class="text-[10px] text-emerald-500 animate-pulse hidden">Refreshing...</span>
+            <div class="flex justify-between items-center px-2">
+                <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Inbox</h2>
+                <button onclick="checkInbox()" id="refreshBtn" class="p-2 bg-emerald-500/10 rounded-full text-emerald-500 hover:bg-emerald-500/20 transition-all">
+                    <svg id="refreshIcon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
+                </button>
             </div>
 
             <div id="inbox" class="space-y-3">
-                <!-- No messages state -->
                 <div class="text-center py-16 bg-white/[0.02] rounded-3xl border border-dashed border-white/5">
-                    <div class="text-3xl mb-2">📥</div>
-                    <p class="text-gray-500 text-sm">Waiting for incoming messages...</p>
+                    <p class="text-gray-500 text-sm">No messages yet. Waiting...</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Modal for reading emails -->
+    <!-- Reader Modal -->
     <div id="modal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-4">
-        <div class="w-full max-w-2xl bg-[#0f172a] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+        <div class="w-full max-w-2xl bg-[#0f172a] rounded-3xl overflow-hidden border border-white/10">
             <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
-                <h3 id="modalSubject" class="font-bold truncate pr-6 text-emerald-400"></h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-red-500 transition-all">&times;</button>
+                <h3 id="modalSubject" class="font-bold text-emerald-400 truncate"></h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">&times;</button>
             </div>
-            <div id="modalBody" class="p-8 h-[60vh] overflow-y-auto text-gray-300 leading-relaxed"></div>
+            <div id="modalBody" class="p-8 h-[60vh] overflow-y-auto text-gray-300"></div>
         </div>
     </div>
 
     <script>
         let currentEmail = localStorage.getItem('tm_addr') || "";
         let expiryTime = parseInt(localStorage.getItem('tm_exp')) || 0;
-        let pollInterval = null;
+        let lastMsgCount = 0;
+        const msgSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
 
         async function initEmail() {
-            document.getElementById('emailBox').value = "Syncing...";
-            try {
-                const res = await fetch('/api/generate');
-                const data = await res.json();
-                currentEmail = data.email;
-                expiryTime = Date.now() + 600000;
-                
-                localStorage.setItem('tm_addr', currentEmail);
-                localStorage.setItem('tm_exp', expiryTime);
-                
-                renderUI();
-                startPolling();
-            } catch (e) {
-                document.getElementById('emailBox').value = "Error. Retry.";
-            }
+            document.getElementById('emailBox').value = "Connecting...";
+            const res = await fetch('/api/generate');
+            const data = await res.json();
+            currentEmail = data.email;
+            expiryTime = Date.now() + 600000;
+            localStorage.setItem('tm_addr', currentEmail);
+            localStorage.setItem('tm_exp', expiryTime);
+            renderUI();
+            checkInbox();
         }
 
         function renderUI() {
             document.getElementById('emailBox').value = currentEmail;
-            startTimer();
-        }
-
-        function startTimer() {
             clearInterval(window.tInt);
             window.tInt = setInterval(() => {
                 const diff = expiryTime - Date.now();
@@ -150,34 +102,41 @@
 
         async function checkInbox() {
             if(!currentEmail) return;
-            document.getElementById('loader').classList.remove('hidden');
+            const icon = document.getElementById('refreshIcon');
+            icon.classList.add('refresh-spin');
+            
             try {
-                const res = await fetch(`/api/inbox?email=${encodeURIComponent(currentEmail)}`);
+                // Cache-buster (?t=...) যোগ করা হয়েছে যাতে ব্রাউজার পুরনো ডাটা না দেখায়
+                const res = await fetch(`/api/inbox?email=${encodeURIComponent(currentEmail)}&t=${Date.now()}`);
                 const messages = await res.json();
-                if(messages && messages.length > 0) {
+                
+                if(messages.length > lastMsgCount) {
+                    msgSound.play(); // নতুন মেসেজ আসলে সাউন্ড হবে
                     renderMessages(messages);
                 }
+                lastMsgCount = messages.length;
             } catch (e) {}
-            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1000);
+            
+            setTimeout(() => icon.classList.remove('refresh-spin'), 1000);
         }
 
         function renderMessages(messages) {
             const container = document.getElementById('inbox');
             container.innerHTML = messages.map(msg => `
                 <div onclick='openMessage(${JSON.stringify(msg).replace(/'/g, "&apos;")})' 
-                     class="glow-card p-5 rounded-2xl cursor-pointer border border-white/5 hover:border-emerald-500/40 transition-all animate-fadeIn">
-                    <div class="flex justify-between items-start mb-1">
-                        <span class="text-emerald-400 font-bold text-sm">${msg.from || 'Unknown'}</span>
-                        <span class="text-[9px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded">NEW</span>
+                     class="glow-card p-5 rounded-2xl cursor-pointer border border-white/5 hover:border-emerald-500/50 transition-all">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-emerald-400 font-bold text-sm">${msg.from}</span>
+                        <span class="text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold">NEW</span>
                     </div>
-                    <div class="text-sm text-gray-200 font-medium truncate">${msg.subject || '(No Subject)'}</div>
+                    <div class="text-sm text-gray-200 font-medium truncate">${msg.subject || 'No Subject'}</div>
                 </div>
             `).join('');
         }
 
         function openMessage(msg) {
             document.getElementById('modalSubject').innerText = msg.subject;
-            document.getElementById('modalBody').innerHTML = DOMPurify.sanitize(msg.body || msg.html || 'No content.');
+            document.getElementById('modalBody').innerHTML = DOMPurify.sanitize(msg.body || msg.html || 'Empty');
             document.getElementById('modal').classList.remove('hidden');
         }
 
@@ -185,10 +144,7 @@
 
         function copyEmail() {
             navigator.clipboard.writeText(currentEmail);
-            const btn = event.target;
-            const oldText = btn.innerText;
-            btn.innerText = "COPIED TO CLIPBOARD!";
-            setTimeout(() => btn.innerText = oldText, 2000);
+            alert("Email Copied!");
         }
 
         function extendTime() {
@@ -196,23 +152,11 @@
             localStorage.setItem('tm_exp', expiryTime);
         }
 
-        function startPolling() {
-            clearInterval(pollInterval);
-            checkInbox();
-            pollInterval = setInterval(checkInbox, 5000); // 5 সেকেন্ড পর পর চেক
-        }
+        // অটোমেটিক ৫ সেকেন্ড পর পর চেক করবে
+        setInterval(checkInbox, 5000);
 
-        if (currentEmail && expiryTime > Date.now()) {
-            renderUI();
-            startPolling();
-        } else {
-            initEmail();
-        }
+        if (currentEmail && expiryTime > Date.now()) { renderUI(); checkInbox(); } 
+        else { initEmail(); }
     </script>
-
-    <style>
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
-    </style>
 </body>
 </html>
