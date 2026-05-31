@@ -13,21 +13,12 @@ export default async function handler(req, res) {
         });
 
         const domains = await response.json();
-        
-        // ডোমেইন চেক করা
-        let domain = "cybertemp.xyz"; // Default fallback
-        if (Array.isArray(domains) && domains.length > 0) {
-            domain = domains[0];
-        } else if (domains.domains && domains.domains.length > 0) {
-            domain = domains.domains[0];
-        }
+        const domainList = Array.isArray(domains) ? domains : (domains.domains || ["cybertemp.xyz"]);
+        const domain = domainList[0];
 
         const username = Math.random().toString(36).substring(2, 10);
-        const fullEmail = `${username}@${domain}`;
-
-        return res.status(200).json({ email: fullEmail });
+        return res.status(200).json({ email: `${username}@${domain}` });
     } catch (e) {
-        // যদি API পুরোপুরি ফেইল করে, তবুও একটি ডামি ইমেইল দিবে যাতে undefined না দেখায়
         const username = Math.random().toString(36).substring(2, 10);
         return res.status(200).json({ email: `${username}@cybertemp.xyz` });
     }
