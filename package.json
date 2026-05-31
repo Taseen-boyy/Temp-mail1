@@ -1,6 +1,7 @@
 {
-  "name": "10min-trashmail",
+  "name": "10min-trashmail-mongo",
   "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {}
+  "dependencies": {
+    "mongoose": "^8.0.0"
+  }
 }
