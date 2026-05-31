@@ -3,224 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="tabTitle">10-Min TrashMail</title>
+    <title id="tabTitle">TrashMail | Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { 
-            background: #05070a; 
-            color: #f8fafc; 
-            font-family: 'Space Grotesk', sans-serif;
-            background-image: radial-gradient(circle at 50% -20%, #1e293b 0%, #05070a 100%);
-        }
-        .glow-card { 
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .btn-green {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            transition: all 0.3s ease;
-        }
-        .btn-green:hover { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); transform: translateY(-1px); }
-        .btn-green:active { transform: scale(0.98); }
+        body { background: #020408; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; background-image: radial-gradient(circle at 50% -10%, #111827 0%, transparent 50%); }
+        .premium-card { background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .timer-glow { font-size: 5rem; font-weight: 800; background: linear-gradient(180deg, #fff 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3)); }
+        .btn-glow { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: all 0.3s ease; }
+        .btn-glow:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4); }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col items-center">
+    
+    <div id="announceBar" class="hidden w-full bg-emerald-500/20 border-b border-emerald-500/30 p-3 text-center text-xs font-bold text-emerald-400"></div>
 
-    <!-- Top Navigation -->
-    <header class="p-6 flex justify-between items-center max-w-4xl mx-auto">
-        <div class="flex items-center gap-2">
-            <h1 id="brandName" class="text-xl font-bold tracking-tighter text-emerald-500 uppercase">TRASHMAIL</h1>
+    <header class="w-full max-w-5xl p-8 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+            <img id="siteLogo" src="" class="w-10 h-10 rounded-xl hidden border border-white/10">
+            <div>
+                <h1 id="brandName" class="text-2xl font-black text-white tracking-tighter">TRASHMAIL</h1>
+                <p id="siteDesc" class="text-[10px] text-gray-500 uppercase font-bold tracking-widest"></p>
+            </div>
         </div>
-        <div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-            <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            Live
+        <div class="flex items-center gap-2 bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20">
+            <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+            <span class="text-[10px] font-black text-emerald-500 uppercase">Stealth Active</span>
         </div>
     </header>
 
-    <!-- Top Ad Section -->
-    <div id="topAd" class="max-w-xl mx-auto px-4 overflow-hidden mb-4"></div>
-
-    <main class="max-w-xl mx-auto px-4 space-y-6 pb-20">
+    <main class="w-full max-w-xl px-4 space-y-6">
+        <div id="adT"></div>
         
-        <!-- Timer & Address Card -->
-        <div class="glow-card rounded-3xl p-8 text-center shadow-2xl">
-            <div id="countdown" class="text-6xl font-bold text-emerald-500 mb-6 tracking-tighter">10:00</div>
-            
-            <div class="space-y-4">
-                <div class="relative">
-                    <input type="text" id="emailBox" readonly value="Syncing API..." 
-                        class="w-full bg-black/40 border border-white/5 p-5 rounded-2xl text-center text-lg font-medium text-emerald-100 focus:outline-none transition-all">
-                </div>
+        <div class="premium-card rounded-[2.5rem] p-10 text-center relative overflow-hidden">
+            <div id="countdown" class="timer-glow mb-2">10:00</div>
+            <p class="text-gray-500 text-[10px] font-bold uppercase tracking-[0.3em] mb-8">System Sync Timeout</p>
 
+            <div class="space-y-4">
+                <input type="text" id="emailBox" readonly class="w-full bg-black/40 border border-white/5 p-6 rounded-2xl text-center text-xl text-emerald-400 font-bold outline-none" value="Establishing Connection...">
+                
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="copyEmail()" class="btn-green col-span-2 text-black font-bold py-4 rounded-2xl shadow-lg">
-                        COPY EMAIL ADDRESS
-                    </button>
-                    <button onclick="extendTime()" class="bg-white/5 hover:bg-white/10 py-4 rounded-2xl text-sm font-semibold border border-white/5 transition-all">+10 Min</button>
-                    <button onclick="initEmail()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 py-4 rounded-2xl text-sm font-semibold border border-red-500/20 transition-all">New Address</button>
+                    <button onclick="copyEmail()" class="btn-glow col-span-2 text-black font-black py-5 rounded-2xl text-sm uppercase tracking-wider">COPY ADDRESS</button>
+                    <button onclick="initEmail()" class="bg-white/5 py-4 rounded-2xl text-sm font-bold border border-white/5 transition-all hover:bg-white/10">New Email</button>
+                    <button onclick="expiryTime+=600000" class="bg-white/5 py-4 rounded-xl border border-white/5 text-emerald-500 font-bold transition-all hover:bg-white/10">+10 Min</button>
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Ad Section -->
-        <div id="bottomAd" class="max-w-xl mx-auto overflow-hidden"></div>
+        <div id="adB"></div>
 
-        <!-- Inbox Listing -->
         <section class="space-y-4">
-            <div class="flex justify-between items-center px-2">
-                <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Incoming Messages</h2>
-                <span id="refreshLoader" class="text-[10px] text-emerald-500 animate-pulse hidden">Checking...</span>
+            <div class="flex justify-between items-center px-4">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-500">Secure Inbox</h3>
+                <span id="pollTag" class="text-[9px] text-emerald-500/50 font-bold italic animate-pulse">Polling Data...</span>
             </div>
-
-            <div id="inbox" class="space-y-3">
-                <div class="text-center py-16 bg-white/[0.02] rounded-3xl border border-dashed border-white/5">
-                    <p class="text-gray-500 text-sm italic">Waiting for messages...</p>
+            <div id="inbox" class="space-y-3 pb-20">
+                <div class="premium-card rounded-3xl p-16 text-center border-dashed border-white/10 text-gray-600">
+                    <p class="text-sm">Listening for incoming data...</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Message Modal -->
-    <div id="modal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-50 flex items-center justify-center p-4">
-        <div class="w-full max-w-2xl bg-[#0f172a] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
-                <h3 id="modalSubject" class="font-bold truncate pr-6 text-emerald-400"></h3>
-                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-red-500 transition-all font-bold">&times;</button>
+    <footer class="w-full max-w-4xl py-12 text-center">
+        <p id="footerText" class="text-[10px] text-gray-700 font-bold uppercase tracking-[0.4em]"></p>
+    </footer>
+
+    <!-- Reading Modal -->
+    <div id="modal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-2xl z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-3xl premium-card rounded-[2.5rem] overflow-hidden flex flex-col max-h-[85vh]">
+            <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <div>
+                    <h4 id="mSub" class="text-xl font-black text-emerald-400 truncate"></h4>
+                    <p id="mFrom" class="text-[10px] text-gray-500 font-bold uppercase mt-1 tracking-widest"></p>
+                </div>
+                <button onclick="closeM()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-2xl hover:bg-red-500/20 transition-all">&times;</button>
             </div>
-            <div id="modalBody" class="p-8 h-[60vh] overflow-y-auto text-gray-300 leading-relaxed bg-[#05070a]"></div>
+            <div id="mBody" class="p-10 overflow-y-auto text-gray-300 leading-relaxed text-lg flex-1"></div>
         </div>
     </div>
 
     <script>
-        let currentEmail = "";
-        let expiryTime = 0;
-        let pollInterval = null;
+        let currentEmail = ""; let expiryTime = 0;
         const msgSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
 
-        // ১. ইমেইল এবং সাইট ডাটা ইনিশিয়ালাইজ করা
         async function initEmail() {
+            document.getElementById('emailBox').value = "Authenticating...";
             try {
-                document.getElementById('emailBox').value = "Generating...";
                 const res = await fetch('/api/generate');
                 const data = await res.json();
+                if(data.maintenance) { document.body.innerHTML = `<div class="h-screen flex items-center justify-center font-bold text-emerald-500">SYSTEM MAINTENANCE - PLEASE BACK LATER</div>`; return; }
                 
-                // undefined ঠেকাতে ডিফল্ট ভ্যালু চেক
-                currentEmail = data.email || "error@cybertemp.xyz";
-                const siteName = data.siteName || "10-MIN TRASHMAIL";
+                currentEmail = data.email;
+                expiryTime = Date.now() + 600000;
                 
-                // UI আপডেট
+                document.getElementById('brandName').innerText = data.siteName || "TRASHMAIL";
+                document.getElementById('tabTitle').innerText = data.siteName || "TrashMail";
+                document.getElementById('siteDesc').innerText = data.description || "Disposable Service";
+                document.getElementById('footerText').innerText = data.footerText || "";
                 document.getElementById('emailBox').value = currentEmail;
-                document.getElementById('brandName').innerText = siteName;
-                document.getElementById('tabTitle').innerText = siteName;
                 
-                // Ads লোড করা
-                document.getElementById('topAd').innerHTML = data.adTop || '';
-                document.getElementById('bottomAd').innerHTML = data.adBottom || '';
+                if(data.showAnnouncement) {
+                    document.getElementById('announceBar').innerText = data.announcement;
+                    document.getElementById('announceBar').classList.remove('hidden');
+                } else {
+                    document.getElementById('announceBar').classList.add('hidden');
+                }
                 
-                expiryTime = Date.now() + 600000; // ১০ মিনিট
+                if(data.logoUrl) {
+                    document.getElementById('siteLogo').src = data.logoUrl;
+                    document.getElementById('siteLogo').classList.remove('hidden');
+                }
+                document.getElementById('adT').innerHTML = data.adTop || '';
+                document.getElementById('adB').innerHTML = data.adBottom || '';
                 
                 startTimer();
-                startPolling();
-            } catch (err) {
-                console.error("Initialization failed:", err);
-                document.getElementById('emailBox').value = "API Error. Please Refresh.";
-            }
+            } catch (e) { document.getElementById('emailBox').value = "Sync Error"; }
         }
 
-        // ২. টাইমার কন্ট্রোল
         function startTimer() {
             clearInterval(window.tInt);
             window.tInt = setInterval(() => {
                 const diff = expiryTime - Date.now();
-                if (diff <= 0) {
-                    initEmail();
-                    return;
-                }
-                const m = Math.floor(diff / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                document.getElementById('countdown').innerText = `${m}:${s < 10 ? '0' + s : s}`;
+                if(diff <= 0) initEmail();
+                const m = Math.floor(diff/60000); const s = Math.floor((diff%60000)/1000);
+                document.getElementById('countdown').innerText = `${m}:${s < 10 ? '0'+s : s}`;
             }, 1000);
         }
 
-        // ৩. ইনবক্স চেক (Polling)
         async function checkInbox() {
-            if (!currentEmail) return;
-            const loader = document.getElementById('refreshLoader');
-            loader.classList.remove('hidden');
-            
+            if(!currentEmail) return;
             try {
                 const res = await fetch(`/api/inbox?email=${encodeURIComponent(currentEmail)}&t=${Date.now()}`);
-                const messages = await res.json();
-                
-                if (messages && messages.length > 0) {
-                    renderInbox(messages);
+                const msgs = await res.json();
+                if(msgs.length > 0) {
+                    document.getElementById('inbox').innerHTML = msgs.map(m => `
+                        <div onclick='openM(${JSON.stringify(m).replace(/'/g, "&apos;")})' 
+                             class="premium-card p-6 rounded-2xl cursor-pointer border-l-4 border-emerald-500 hover:bg-white/5 transition-all">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-emerald-400 font-black text-[10px] uppercase tracking-widest">${m.from.split('<')[0]}</span>
+                                <span class="text-[9px] text-gray-600 font-bold">RECENT</span>
+                            </div>
+                            <div class="text-white font-bold truncate">${m.subject || '(No Subject)'}</div>
+                        </div>
+                    `).join('');
+                    if(msgs.length > (window.lM || 0)) { msgSound.play().catch(()=>{}); window.lM = msgs.length; }
                 }
-            } catch (e) {
-                console.error("Poll failed");
-            }
-            setTimeout(() => loader.classList.add('hidden'), 1000);
+            } catch (e) {}
         }
 
-        // ৪. ইনবক্স রেন্ডারিং
-        function renderInbox(messages) {
-            const container = document.getElementById('inbox');
-            container.innerHTML = messages.map(msg => `
-                <div onclick='openMessage(${JSON.stringify(msg).replace(/'/g, "&apos;")})' 
-                     class="glow-card p-5 rounded-2xl cursor-pointer border border-white/5 hover:border-emerald-500/40 transition-all">
-                    <div class="flex justify-between items-start mb-1">
-                        <span class="text-emerald-400 font-bold text-sm">${msg.from || 'Service'}</span>
-                        <span class="text-[9px] bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded font-bold uppercase">Received</span>
-                    </div>
-                    <div class="text-sm text-gray-200 font-medium truncate">${msg.subject || '(No Subject)'}</div>
-                </div>
-            `).join('');
-            
-            // নতুন মেসেজ আসলে সাউন্ড
-            if (messages.length > (window.lastCount || 0)) {
-                msgSound.play().catch(() => {});
-            }
-            window.lastCount = messages.length;
-        }
-
-        // ৫. মেসেজ খোলা এবং বন্ধ করা
-        function openMessage(msg) {
-            document.getElementById('modalSubject').innerText = msg.subject || 'Message';
-            const cleanHtml = DOMPurify.sanitize(msg.body || msg.html || 'No content.');
-            document.getElementById('modalBody').innerHTML = cleanHtml;
+        function openM(m) { 
+            document.getElementById('mSub').innerText = m.subject;
+            document.getElementById('mFrom').innerText = `Source: ${m.from}`;
+            document.getElementById('mBody').innerHTML = DOMPurify.sanitize(m.body || m.html);
             document.getElementById('modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
+        function closeM() { 
+            document.getElementById('modal').classList.add('hidden'); 
+            document.body.style.overflow = 'auto';
         }
 
-        // ৬. ইউটিলিটি ফাংশন
         function copyEmail() {
             navigator.clipboard.writeText(currentEmail);
-            const btn = event.target;
-            const original = btn.innerText;
-            btn.innerText = "COPIED TO CLIPBOARD!";
-            setTimeout(() => btn.innerText = original, 2000);
+            const el = document.getElementById('emailBox');
+            const oldVal = el.value;
+            el.value = "Copied to Clipboard!";
+            setTimeout(() => el.value = oldVal, 2000);
         }
 
-        function extendTime() {
-            expiryTime += 600000;
-        }
-
-        function startPolling() {
-            clearInterval(pollInterval);
-            checkInbox();
-            pollInterval = setInterval(checkInbox, 5000);
-        }
-
-        // সাইট লোড হলে শুরু করা
-        window.onload = initEmail;
+        setInterval(checkInbox, 5000);
+        initEmail();
     </script>
 </body>
-</html>
+    </html>
