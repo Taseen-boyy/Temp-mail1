@@ -1,5 +1,5 @@
 {
-  "name": "trashmail-premium",
+  "name": "trashmail-app",
   "version": "1.0.0",
   "main": "api/index.js",
   "dependencies": {
