@@ -1,48 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>System Control | Master Hub</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Hub | System Control</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: white; }
-        .box { background: #0f172a; border: 1px solid #1e293b; padding: 25px; border-radius: 20px; }
-        input, textarea, select { background: #1e293b; border: 1px solid #334155; padding: 12px; border-radius: 10px; width: 100%; color: white; margin-top: 5px; outline: none; }
-        input:focus { border-color: #10b981; }
-        label { font-size: 11px; color: #64748b; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        body { 
+            background: #020617; 
+            color: white; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+        .box { 
+            background: #0f172a; 
+            border: 1px solid #1e293b; 
+            padding: 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        input, textarea, select { 
+            background: #1e293b; 
+            border: 1px solid #334155; 
+            padding: 12px; 
+            border-radius: 12px; 
+            width: 100%; 
+            color: white; 
+            margin-top: 5px; 
+            outline: none; 
+            transition: 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { 
+            border-color: #10b981; 
+            background: #111e36;
+        }
+        label { 
+            font-size: 11px; 
+            color: #64748b; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            padding-left: 2px;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+        .btn-save:active { transform: scale(0.98); }
     </style>
 </head>
-<body class="p-6 pb-20">
-    <div id="login" class="max-w-md mx-auto mt-20 box text-center">
-        <h1 class="text-2xl font-bold mb-4 text-emerald-500 uppercase">Admin Vault</h1>
-        <input type="password" id="pass" placeholder="Password" class="mb-4 text-center">
-        <button onclick="login()" class="w-full bg-emerald-500 text-black font-bold py-4 rounded-xl">OPEN HUB</button>
+<body class="p-6 pb-24">
+
+    <!-- Login Section -->
+    <div id="login" class="max-w-md mx-auto mt-24 box text-center">
+        <div class="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h1 class="text-2xl font-bold mb-2">Master Vault</h1>
+        <p class="text-gray-500 text-xs mb-6 uppercase tracking-widest font-bold">Admin Authorization Required</p>
+        
+        <input type="password" id="pass" placeholder="Enter Access Code" class="mb-4 text-center text-lg tracking-[0.5em]">
+        <button onclick="login()" class="w-full btn-save text-black font-black py-4 rounded-xl transition-all">UNLOCK DASHBOARD</button>
+        <p id="error" class="text-red-500 mt-4 text-xs font-bold hidden">Access Denied: Invalid Password</p>
     </div>
 
+    <!-- Dashboard Section -->
     <div id="dash" class="hidden max-w-5xl mx-auto space-y-6">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold uppercase tracking-tighter">Master <span class="text-emerald-500">Dashboard</span></h1>
-            <button onclick="save()" class="bg-emerald-500 text-black px-12 py-4 rounded-xl font-bold">SAVE ALL CONFIG</button>
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 bg-[#0f172a] p-6 rounded-3xl border border-[#1e293b]">
+            <div>
+                <h1 class="text-3xl font-black uppercase tracking-tighter">System <span class="text-emerald-500">Hub</span></h1>
+                <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Management & Configuration</p>
+            </div>
+            <button onclick="save()" class="btn-save text-black px-12 py-4 rounded-2xl font-black text-sm shadow-xl">SAVE ALL CHANGES</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Identity -->
+            
+            <!-- Branding Box -->
             <div class="box space-y-4 border-t-4 border-emerald-500">
-                <h3 class="font-bold text-emerald-500 text-xs uppercase">Branding</h3>
-                <div><label>Site Name</label><input type="text" id="siteName"></div>
-                <div><label>Site Description</label><input type="text" id="desc"></div>
-                <div><label>Logo Image Link</label><input type="text" id="logo"></div>
-                <div><label>Footer Text</label><input type="text" id="footer"></div>
+                <h3 class="font-black text-emerald-500 text-xs uppercase tracking-widest mb-4">Site Branding</h3>
+                <div>
+                    <label>Website Name</label>
+                    <input type="text" id="siteName" placeholder="e.g. 10-MIN TRASHMAIL">
+                </div>
+                <div>
+                    <label>Description</label>
+                    <input type="text" id="desc" placeholder="e.g. Disposable Stealth Email">
+                </div>
+                <div>
+                    <label>Logo Image URL</label>
+                    <input type="text" id="logo" placeholder="https://example.com/logo.png">
+                </div>
+                <div>
+                    <label>Footer Copyright Text</label>
+                    <input type="text" id="footer" placeholder="e.g. © 2024 YourBrand">
+                </div>
             </div>
 
-            <!-- API & Security -->
+            <!-- System Box -->
             <div class="box space-y-4 border-t-4 border-blue-500">
-                <h3 class="font-bold text-blue-500 text-xs uppercase">System Configuration</h3>
-                <div><label>API Keys (One Per Line)</label><textarea id="keys" rows="4"></textarea></div>
-                <div><label>Maintenance Mode</label><select id="maint"><option value="false">OFF (Normal Mode)</option><option value="true">ON (System Blocked)</option></select></div>
+                <h3 class="font-black text-blue-500 text-xs uppercase tracking-widest mb-4">System Settings</h3>
+                <div>
+                    <label>CyberTemp API Keys (One Per Line)</label>
+                    <textarea id="keys" rows="5" placeholder="tk_xxxxxxxx..."></textarea>
+                </div>
+                <div>
+                    <label>Maintenance Mode</label>
+                    <select id="maint">
+                        <option value="false">OFF - Site is Live</option>
+                        <option value="true">ON - System Blocked</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- News -->
+            <!-- News Box -->
             <div class="box md:col-span-2 space-y-4 border-t-4 border-purple-500">
-                <h3 class="font-bold text-purple-500 text-xs uppercase">Announcement Board</h3>
-                <div><label>Announcement Message</label><input type="text" id="ann"></div>
-                <div><label>Visibility Status
+                <h3 class="font-black text-purple-500 text-xs uppercase tracking-widest mb-4">Global Announcement</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <div class="md:col-span-2">
+                        <label>Announcement Message</label>
+                        <input type="text" id="ann" placeholder="Welcome to our new stealth server!">
+                    </div>
+                    <div>
+                        <label>Visibility</label>
+                        <select id="sAnn">
+                            <option value="false">Hidden</option>
+                            <option value="true">Show on Website</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advertising Box -->
+            <div class="box md:col-span-2 space-y-4 border-t-4 border-orange-500">
+                <h3 class="font-black text-orange-500 text-xs uppercase tracking-widest mb-4">Advertising (HTML Supported)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label>Top Banner HTML (Adsterra/AdSense)</label>
+                        <textarea id="adT" rows="6" placeholder="Paste script here..."></textarea>
+                    </div>
+                    <div>
+                        <label>Bottom / Native Ad HTML</label>
+                        <textarea id="adB" rows="6" placeholder="Paste script here..."></textarea>
+                    </div>
+                </div>
+                <p class="text-[10px] text-gray-500 italic">Note: Script tags are automatically sanitized but will execute in the frontend.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let adminPass = "";
+
+        async function login() {
+            const passInput = document.getElementById('pass');
+            adminPass = passInput.value;
+            
+            try {
+                const res = await fetch('/api/admin/config', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ password: adminPass, action: 'get' })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('login').classList.add('hidden');
+                    document.getElementById('dash').classList.remove('hidden');
+                    document.body.classList.remove('flex', 'items-center');
+
+                    // Data Populate
+                    document.getElementById('siteName').value = data.siteName || "";
+                    document.getElementById('desc').value = data.description || "";
+                    document.getElementById('logo').value = data.logoUrl || "";
+                    document.getElementById('footer').value = data.footerText || "";
+                    document.getElementById('keys').value = (data.apiKeys || []).join('\n');
+                    document.getElementById('ann').value = data.announcement || "";
+                    document.getElementById('sAnn').value = data.showAnnouncement.toString();
+                    document.getElementById('maint').value = data.maintenance.toString();
+                    document.getElementById('adT').value = data.adTop || "";
+                    document.getElementById('adB').value = data.adBottom || "";
+                } else {
+                    document.getElementById('error').classList.remove('hidden');
+                    passInput.value = "";
+                }
+            } catch (e) {
+                alert("Server Connection Error!");
+            }
+        }
+
+        async function save() {
+            const configData = {
+                siteName: document.getElementById('siteName').value,
+                description: document.getElementById('desc').value,
+                logoUrl: document.getElementById('logo').value,
+                footerText: document.getElementById('footer').value,
+                apiKeys: document.getElementById('keys').value.split('\n').filter(k => k.trim()),
+                announcement: document.getElementById('ann').value,
+                showAnnouncement: document.getElementById('sAnn').value === "true",
+                maintenance: document.getElementById('maint').value === "true",
+                adTop: document.getElementById('adT').value,
+                adBottom: document.getElementById('adB').value
+            };
+
+            try {
+                const res = await fetch('/api/admin/config', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ 
+                        password: adminPass, 
+                        action: 'update', 
+                        data: configData 
+                    })
+                });
+
+                if (res.ok) {
+                    alert("✅ DATABASE SYNCHRONIZED SUCCESSFULLY!");
+                } else {
+                    alert("❌ SAVE FAILED: SESSION EXPIRED?");
+                }
+            } catch (e) {
+                alert("Fatal Error Saving Data!");
+            }
+        }
+    </script>
+</body>
+                        </html>
