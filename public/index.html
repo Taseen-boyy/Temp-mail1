@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="tabTitle">TrashMail | Secure Stealth Inbox</title>
+    <title id="tabTitle">TrashMail | Stealth Inbox</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #10b981; --bg: #020408; }
         body { background: var(--bg); color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; background-image: radial-gradient(circle at 50% -10%, #111827 0%, transparent 50%); background-attachment: fixed; }
         .premium-card { background: rgba(13, 17, 23, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .timer-text { font-size: clamp(3rem, 12vw, 5rem); font-weight: 800; background: linear-gradient(180deg, #fff 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3)); }
         .btn-glow { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: 0.3s; }
-        #qrcode img { margin: 0 auto; border-radius: 12px; border: 4px solid white; }
-        iframe { max-width: 100% !important; margin: 0 auto; display: block; }
+        iframe { max-width: 100% !important; margin: 0 auto !important; display: block !important; border-radius: 12px; }
+        #qrcode img { margin: 0 auto; border: 4px solid white; border-radius: 12px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center">
@@ -31,24 +31,24 @@
             </div>
         </div>
         <div class="flex gap-2">
-            <button onclick="toggleLang('en')" class="text-[10px] bg-white/5 px-3 py-1 rounded-full border border-white/10 hover:bg-emerald-500 hover:text-black transition uppercase font-bold">EN</button>
-            <button onclick="toggleLang('bn')" class="text-[10px] bg-white/5 px-3 py-1 rounded-full border border-white/10 hover:bg-emerald-500 hover:text-black transition uppercase font-bold">বাংলা</button>
+            <button onclick="toggleLang('en')" class="text-[10px] bg-white/5 px-3 py-1 rounded-full border border-white/10 hover:bg-emerald-500 hover:text-black transition font-bold">EN</button>
+            <button onclick="toggleLang('bn')" class="text-[10px] bg-white/5 px-3 py-1 rounded-full border border-white/10 hover:bg-emerald-500 hover:text-black transition font-bold">বাংলা</button>
         </div>
     </header>
 
     <main class="w-full max-w-xl px-4 space-y-6">
-        <div id="adT" class="w-full flex justify-center overflow-hidden rounded-xl"></div>
+        <div id="adT" class="w-full flex justify-center"></div>
 
         <div class="premium-card rounded-[2.5rem] p-8 text-center relative overflow-hidden">
             <div id="countdown" class="timer-text mb-2">10:00</div>
-            <p id="txt-expire" class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-10">System Sync Active</p>
+            <p id="txt-expire" class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-10">Vault Connection Secure</p>
 
             <div class="space-y-4">
-                <input type="text" id="emailBox" readonly class="w-full bg-black/40 border border-white/5 p-5 rounded-2xl text-center text-xl text-emerald-400 font-bold outline-none" value="Connecting...">
+                <input type="text" id="emailBox" readonly class="w-full bg-black/40 border border-white/5 p-5 rounded-2xl text-center text-xl text-emerald-400 font-bold outline-none" value="Syncing...">
                 
                 <div class="grid grid-cols-2 gap-3">
                     <button onclick="copyEmail()" id="btn-copy" class="btn-glow col-span-2 text-black font-black py-5 rounded-2xl text-sm uppercase">COPY ADDRESS</button>
-                    <button onclick="initEmail()" id="btn-new" class="bg-white/5 py-4 rounded-2xl text-sm font-bold border border-white/5 transition-all">New Email</button>
+                    <button onclick="initEmail()" id="btn-new" class="bg-white/5 py-4 rounded-2xl text-sm font-bold border border-white/5 hover:bg-white/10 transition-all">New Email</button>
                     <button onclick="showQR()" class="bg-white/5 py-4 rounded-2xl text-sm font-bold border border-white/5 transition-all">QR Code</button>
                 </div>
             </div>
@@ -62,27 +62,27 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="premium-card p-4 rounded-2xl text-center">
                 <div id="stat-emails" class="text-xl font-bold text-emerald-500">0</div>
-                <div id="txt-total" class="text-[9px] text-gray-500 uppercase font-bold">Mails Created</div>
+                <div id="txt-total" class="text-[9px] text-gray-500 uppercase font-bold tracking-tighter">Total Mails Created</div>
             </div>
             <div class="premium-card p-4 rounded-2xl text-center">
                 <div id="stat-online" class="text-xl font-bold text-blue-400 animate-pulse">1</div>
-                <div id="txt-online" class="text-[9px] text-gray-500 uppercase font-bold">Live Users</div>
+                <div id="txt-online" class="text-[9px] text-gray-500 uppercase font-bold tracking-tighter">Users Online</div>
             </div>
         </div>
 
-        <div id="adB" class="w-full flex justify-center overflow-hidden rounded-xl"></div>
+        <div id="adB" class="w-full flex flex-col items-center gap-4"></div>
 
         <section class="space-y-4 pb-20">
             <h3 id="txt-inbox" class="text-[10px] font-black uppercase tracking-widest text-gray-500 px-4">Secure Inbox</h3>
             <div id="inbox" class="space-y-3">
                 <div class="premium-card rounded-3xl p-16 text-center border-dashed border-white/10 text-gray-600">
-                    <p class="text-sm">Listening for messages...</p>
+                    <p class="text-sm">Listening for incoming data...</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="w-full max-w-4xl py-12 text-center">
+    <footer class="w-full max-w-4xl py-12 text-center mt-auto">
         <p id="footerText" class="text-[10px] text-gray-700 font-bold uppercase tracking-[0.4em]"></p>
     </footer>
 
@@ -93,7 +93,7 @@
                     <h4 id="mSub" class="text-xl font-black text-emerald-400 truncate"></h4>
                     <p id="mFrom" class="text-[10px] text-gray-500 font-bold uppercase mt-1"></p>
                 </div>
-                <button onclick="closeM()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-2xl hover:bg-red-500/20 transition-all font-black">&times;</button>
+                <button onclick="closeM()" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-2xl hover:bg-red-500/20 transition-all">&times;</button>
             </div>
             <div id="mBody" class="p-10 overflow-y-auto text-gray-300 leading-relaxed text-lg flex-1"></div>
         </div>
@@ -104,10 +104,11 @@
         const msgSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
 
         const i18n = {
-            en: { expire: "System Sync Timeout", copy: "Copy Address", new: "New Email", inbox: "Secure Inbox", total: "Total Mails Created", online: "Live Users" },
-            bn: { expire: "সিস্টেম টাইমআউট", copy: "ইমেইল কপি করুন", new: "নতুন ইমেইল", inbox: "সিকিউর ইনবক্স", total: "মোট তৈরি ইমেইল", online: "অনলাইন ইউজার" }
+            en: { expire: "System Sync Timeout", copy: "Copy Address", new: "New Email", inbox: "Secure Inbox", total: "Mails Created", online: "Live Users" },
+            bn: { expire: "সিস্টেম টাইমআউট", copy: "ইমেইল কপি করুন", new: "নতুন ইমেইল", inbox: "সিকিউর ইনবক্স", total: "তৈরি ইমেইল", online: "অনলাইন ইউজার" }
         };
 
+        // গুরুত্বপূর্ণ: অ্যাড কোড চালানোর জন্য এই ফাংশনটি লাগবেই
         function setInnerHTML(elm, html) {
             elm.innerHTML = html;
             Array.from(elm.querySelectorAll("script")).forEach(oldScript => {
@@ -133,8 +134,13 @@
                 const res = await fetch('/api/generate');
                 const data = await res.json();
                 
+                // ১. মেইনটেন্যান্স চেক
                 if (data.maintenance) {
-                    document.body.innerHTML = `<div class="h-screen flex flex-col items-center justify-center text-emerald-500 font-bold p-10 text-center"><h1 class="text-4xl">MAINTENANCE</h1><p class="mt-4 text-gray-500">${data.siteName} is updating. Be back soon.</p></div>`;
+                    document.body.innerHTML = `
+                        <div class="h-screen flex flex-col items-center justify-center text-center p-10 bg-[#020408]">
+                            <h1 class="text-emerald-500 font-black text-5xl mb-4 tracking-tighter">UNDER MAINTENANCE</h1>
+                            <p class="text-gray-500 text-lg max-w-md">${data.siteName || 'Our Service'} is currently updating for a better experience. Be back soon!</p>
+                        </div>`;
                     return;
                 }
 
@@ -146,7 +152,7 @@
                 document.getElementById('siteDesc').innerText = data.description || "";
                 document.getElementById('footerText').innerText = data.footerText || "";
                 document.getElementById('stat-emails').innerText = data.totalEmailsGenerated || 0;
-                document.getElementById('stat-online').innerText = Math.floor(Math.random() * 40) + 10;
+                document.getElementById('stat-online').innerText = Math.floor(Math.random() * 50) + 20;
                 
                 if(data.showAnnouncement && data.announcement) {
                     document.getElementById('announceBar').innerText = data.announcement;
@@ -158,15 +164,17 @@
                     img.src = data.logoUrl; img.classList.remove('hidden');
                 }
                 
+                // ২. অ্যাড কোড লোড (Adsterra/AdSense এর জন্য)
                 if(data.adTop) setInnerHTML(document.getElementById('adT'), data.adTop);
                 if(data.adBottom) setInnerHTML(document.getElementById('adB'), data.adBottom);
 
+                // ৩. QR Code তৈরি
                 document.getElementById('qrcode').innerHTML = "";
                 new QRCode(document.getElementById("qrcode"), { text: currentEmail, width: 150, height: 150 });
                 
                 startTimer();
                 toggleLang(currentLang);
-            } catch (e) { document.getElementById('emailBox').value = "Sync Error. Refreshing..."; }
+            } catch (e) { document.getElementById('emailBox').value = "Sync Error. Please Refresh."; }
         }
 
         function showQR() { document.getElementById('qrBox').classList.toggle('hidden'); }
@@ -186,10 +194,10 @@
             try {
                 const res = await fetch(`/api/inbox?email=${encodeURIComponent(currentEmail)}&t=${Date.now()}`);
                 const msgs = await res.json();
-                if(msgs.length > 0) {
+                if(msgs && msgs.length > 0) {
                     document.getElementById('inbox').innerHTML = msgs.map(m => `
-                        <div onclick='openM(${JSON.stringify(m).replace(/'/g, "&apos;")})' class="premium-card p-6 rounded-2xl cursor-pointer border-l-4 border-emerald-500 hover:bg-white/5 transition-all">
-                            <div class="flex justify-between items-center mb-1"><span class="text-emerald-400 font-black text-[10px] tracking-widest">${m.from.split('<')[0]}</span><span class="text-[9px] text-gray-600 font-bold">RECENT</span></div>
+                        <div onclick='openM(${JSON.stringify(m).replace(/'/g, "&apos;")})' class="premium-card p-6 rounded-2xl cursor-pointer border-l-4 border-emerald-500 hover:bg-white/5 transition-all mb-3 animate-fadeIn">
+                            <div class="flex justify-between items-center mb-1"><span class="text-emerald-400 font-black text-[10px] tracking-widest">${m.from.split('<')[0]}</span><span class="text-[9px] text-gray-600 font-bold">NEW</span></div>
                             <div class="text-white font-bold truncate">${m.subject || '(No Subject)'}</div>
                         </div>`).join('');
                     if(msgs.length > lastCount) { msgSound.play().catch(()=>{}); lastCount = msgs.length; }
@@ -205,10 +213,11 @@
             document.body.style.overflow = 'hidden';
         }
         function closeM() { document.getElementById('modal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+        
         function copyEmail() { 
             navigator.clipboard.writeText(currentEmail);
             const el = document.getElementById('emailBox'); const old = el.value;
-            el.value = "COPIED!"; setTimeout(() => el.value = old, 1500);
+            el.value = "ADDRESS COPIED!"; setTimeout(() => el.value = old, 1500);
         }
 
         setInterval(checkInbox, 5000);
